@@ -24,7 +24,11 @@ func main() {
 	counts := countWords(words)
 
 	sort.Slice(counts, func(i, j int) bool {
-		return counts[i].count > counts[j].count
+		if counts[i].count != counts[j].count {
+			return counts[i].count > counts[j].count
+		}
+
+		return bytesLess(counts[j].word, counts[i].word)
 	})
 
 	limit := 20
@@ -35,6 +39,25 @@ func main() {
 	for i := 0; i < limit; i++ {
 		writeOutput(counts[i].count, counts[i].word)
 	}
+}
+
+func bytesLess(a, b []byte) bool {
+	minLen := len(a)
+	if len(b) < minLen {
+		minLen = len(b)
+	}
+
+	for i := 0; i < minLen; i++ {
+		if a[i] < b[i] {
+			return true
+		}
+
+		if a[i] > b[i] {
+			return false
+		}
+	}
+
+	return len(a) < len(b)
 }
 
 func isLetter(b byte) bool {
@@ -116,6 +139,7 @@ func writeOutput(count int, word []byte) {
 	} else {
 		for count > 0 {
 			digits = append([]byte{byte('0' + count%10)}, digits...)
+			count /= 10
 		}
 	}
 
