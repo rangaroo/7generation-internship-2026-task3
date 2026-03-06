@@ -23,3 +23,37 @@ cat $1 | tr -cs 'a-zA-Z' '[\n*]' | grep -v "^$" | tr '[:upper:]' '[:lower:]'| so
 быть готовы объяснить, какие изменения потребуются, чтобы запустить решение на
 эталонной платформе.
 
+## Usage
+
+### Building the Program
+```bash
+go build -o wordcount main.go
+```
+
+### Running the Program
+```bash
+./wordcount <filename>
+```
+
+Example:
+```bash
+./wordcount test.txt
+```
+
+### Running Tests
+```bash
+go test -v
+```
+
+### Comparing with Reference Bash Script
+```bash
+# Run our solution
+./wordcount test.txt > our_output.txt
+
+# Run bash reference
+cat test.txt | tr -cs 'a-zA-Z' '[\n*]' | grep -v "^$" | tr '[:upper:]' '[:lower:]' | sort | uniq -c | sort -nr | head -20 > bash_output.txt
+
+# Compare outputs
+diff our_output.txt bash_output.txt
+```
+
